@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Marketplace Prototype (Artisans & SHGs)</title>
+    <style>
+        :root {
+            --primary: #8b4513;
+            --accent: #d2691e;
+            --bg: #fdfaf6;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --success: #2e7d32;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 1.5rem; }
+        .role-selector { background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 0.5rem 1rem; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .role-selector option { background: white; color: black; }
+        
+        .container { display: flex; flex: 1; padding: 1.5rem; gap: 1.5rem; }
+        .sidebar { width: 260px; background: var(--card-bg); padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .main-content { flex: 1; background: var(--card-bg); padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+        .btn { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn:hover { opacity: 0.9; }
+        .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.85rem; }
+        
+        input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem; border: 1px solid #ccc; border-radius: 4px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .card { border: 1px solid #eee; border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; }
+        .card img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; margin-bottom: 0.5rem; }
+        .badge { background: #e0e0e0; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: bold; display: inline-block; margin-bottom: 0.5rem; }
+        .badge-verified { background: #e8f5e9; color: var(--success); }
+
+        .metric-box { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .metric-card { flex: 1; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 1rem; text-align: center; }
+        .metric-card h3 { font-size: 1.5rem; color: var(--primary); }
+        .metric-card p { font-size: 0.85rem; color: #666; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #eee; padding: 0.75rem; text-align: left; }
+        th { background: #f8f9fa; }
+        
+        .smart-panel { background: #fff8e1; border-left: 4px solid #ffb300; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 0 4px 4px 0; }
+        .smart-panel h4 { color: #8c6d00; font-size: 0.95rem; margin-bottom: 0.25rem; }
+
+        .view { display: none; }
+        .view.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Smart Artisan Marketplace</h1>
+        <div>
+            <label style="margin-right: 0.5rem;">Switch Platform Perspective:</label>
+            <select id="roleSelect" class="role-selector" onchange="switchRole(this.value)">
+                <option value="customer">Customer Experience (Web/App)</option>
+                <option value="seller">Artisan / SHG Seller Dashboard</option>
+                <option value="admin">Platform Administrator Portal</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- CUSTOMER VIEW -->
+        <div id="customer-view" class="main-content view active">
+            <h2>Handmade & Local Discoveries</h2>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <input type="text" id="searchInput" placeholder="Smart Search: Type products, materials, artisans..." onkeyup="filterProducts()">
+                <select id="categoryFilter" style="width: 200px;" onchange="filterProducts()">
+                    <option value="All">All Categories</option>
+                    <option value="Pottery">Pottery</option>
+                    <option value="Textiles">Textiles</option>
+                    <option value="Jewelry">Jewelry</option>
+                </select>
+            </div>
+
+            <div class="smart-panel" id="recommendation-panel">
+                <h4>Smart Recommendation Engine</h4>
+                <p id="recommendation-text">Based on local demand: Artisanal Pottery & Handloom Sarees are trending!</p>
+            </div>
+
+            <div class="grid" id="customer-product-grid"></div>
+
+            <h3 style="margin-top: 2rem;">Shopping Cart</h3>
+            <table id="cart-table">
+                <thead>
+                    <tr><th>Item</th><th>Seller</th><th>Price</th><th>Qty</th><th>Action</th></tr>
+                </thead>
+                <tbody id="cart-body"></tbody>
+            </table>
+            <div style="margin-top: 1rem; text-align: right;">
+                <strong>Total: $<span id="cart-total">0.00</span></strong>
+                <button class="btn" style="margin-left: 1rem;" onclick="checkout()">Checkout & Pay</button>
+            </div>
+        </div>
+
+        <!-- SELLER VIEW -->
+        <div id="seller-view" class="main-content view">
+            <h2>Artisan & SHG Seller Dashboard</h2>
+            
+            <div class="metric-box">
+                <div class="metric-card"><h3 id="seller-sales">$0.00</h3><p>Total Revenue</p></div>
+                <div class="metric-card"><h3 id="seller-orders">0</h3><p>Active Orders</p></div>
+                <div class="metric-card"><h3 id="seller-views">142</h3><p>Store Views (Demand High)</p></div>
+            </div>
+
+            <div class="smart-panel">
+                <h4>Smart Demand & Pricing Support Engine</h4>
+                <p id="price-recommendation-text">Select product category below to trigger market price guidance.</p>
+            </div>
+
+            <div style="display: flex; gap: 2rem;">
+                <div style="flex: 1;">
+                    <h3>Add New Handmade Product</h3>
+                    <form id="productForm" onsubmit="addProduct(event)">
+                        <label>Product Name</label>
+                        <input type="text" id="pName" required>
+                        
+                        <label>Category</label>
+                        <select id="pCategory" onchange="updatePriceSupport()" required>
+                            <option value="">Select Category</option>
+                            <option value="Pottery">Pottery</option>
+                            <option value="Textiles">Textiles</option>
+                            <option value="Jewelry">Jewelry</option>
+                        </select>
+                        
+                        <label>Target Price ($)</label>
+                        <input type="number" id="pPrice" step="0.01" required>
+                        
+                        <label>Initial Stock</label>
+                        <input type="number" id="pStock" required>
+                        
+                        <label>Product Image URL</label>
+                        <input type="text" id="pImg" value="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=300" required>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">List Product for Approval</button>
+                    </form>
+                </div>
+
+                <div style="flex: 1.5;">
+                    <h3>Inventory Management</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="seller-product-list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN VIEW -->
+        <div id="admin-view" class="main-content view">
+            <h2>Administrator & Moderation Control Center</h2>
+            
+            <div class="metric-box">
+                <div class="metric-card"><h3 id="admin-pending-count">0</h3><p>Pending Moderations</p></div>
+                <div class="metric-card"><h3>12</h3><p>Registered SHGs</p></div>
+                <div class="metric-card"><h3>98.2%</h3><p>Platform Health Score</p></div>
+            </div>
+
+            <h3>Seller Verification & Product Moderation Queue</h3>
+            <table>
+                <thead>
+                    <tr><th>Seller</th><th>Product Name</th><th>Price</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="admin-moderation-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initial Dataset
+        let products = [
+            { id: 1, name: "Terracotta Clay Pot", seller: "ClayCraft SHG", category: "Pottery", price: 25.00, stock: 15, approved: true, img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=300" },
+            { id: 2, name: "Handloom Cotton Dupatta", seller: "Weavers Guild", category: "Textiles", price: 40.00, stock: 8, approved: true, img: "https://images.unsplash.com/photo-1606760227091-3dd850d978cd?w=300" },
+            { id: 3, name: "Tribal Brass Earrings", seller: "Artisan Collective", category: "Jewelry", price: 18.50, stock: 20, approved: false, img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300" }
+        ];
+
+        let cart = [];
+        let totalSales = 0.00;
+        let totalOrders = 0;
+
+        // Core View Switcher
+        function switchRole(role) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(`${role}-view`).classList.add('active');
+            renderAll();
+        }
+
+        // Render Utilities
+        function renderAll() {
+            renderCustomerGrid();
+            renderSellerTable();
+            renderAdminTable();
+            renderCart();
+        }
+
+        // Customer Functions
+        function renderCustomerGrid() {
+            const grid = document.getElementById('customer-product-grid');
+            grid.innerHTML = '';
+            
+            const searchStr = document.getElementById('searchInput').value.toLowerCase();
+            const categoryStr = document.getElementById('categoryFilter').value;
+
+            products.filter(p => p.approved).forEach(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchStr) || p.seller.toLowerCase().includes(searchStr);
+                const matchesCategory = categoryStr === 'All' || p.category === categoryStr;
+
+                if (matchesSearch && matchesCategory) {
+                    grid.innerHTML += `
+                        <div class="card">
+                            <div>
+                                <img src="${p.img}" alt="${p.name}">
+                                <span class="badge badge-verified">Verified Artisan</span>
+                                <h4>${p.name}</h4>
+                                <p style="font-size: 0.85rem; color: #666;">by ${p.seller}</p>
+                                <p style="font-weight: bold; margin: 0.5rem 0; color: var(--primary);">$${p.price.toFixed(2)}</p>
+                            </div>
+                            <button class="btn btn-sm" onclick="addToCart(${p.id})">Add to Cart</button>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function filterProducts() {
+            renderCustomerGrid();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product && product.stock > 0) {
+                const existing = cart.find(c => c.id === productId);
+                if (existing) {
+                    existing.qty++;
+                } else {
+                    cart.push({ ...product, qty: 1 });
+                }
+                renderCart();
+            } else {
+                alert("Product is out of stock!");
+            }
+        }
+
+        function renderCart() {
+            const body = document.getElementById('cart-body');
+            body.innerHTML = '';
+            let sum = 0;
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                sum += itemTotal;
+                body.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.seller}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>${item.qty}</td>
+                        <td><button class="btn btn-sm btn-outline" onclick="removeFromCart(${index})">Remove</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('cart-total').innerText = sum.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) return alert("Your cart is empty!");
+            cart.forEach(item => {
+                const orig = products.find(p => p.id === item.id);
+                if (orig) orig.stock -= item.qty;
+                totalSales += item.price * item.qty;
+                totalOrders++;
+            });
+            cart = [];
+            alert("Order placed successfully! Notifications sent to respective artisans.");
+            document.getElementById('seller-sales').innerText = `$${totalSales.toFixed(2)}`;
+            document.getElementById('seller-orders').innerText = totalOrders;
+            renderAll();
+        }
+
+        // Seller Functions
+        function addProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('pName').value;
+            const category = document.getElementById('pCategory').value;
+            const price = parseFloat(document.getElementById('pPrice').value);
+            const stock = parseInt(document.getElementById('pStock').value);
+            const img = document.getElementById('pImg').value;
+
+            const newProduct = {
+                id: products.length + 1,
+                name,
+                seller: "My Self-Help Group",
+                category,
+                price,
+                stock,
+                approved: false, // Requires Admin Moderation
+                img
+            };
+
+            products.push(newProduct);
+            document.getElementById('productForm').reset();
+            alert("Product submitted for platform moderation!");
+            renderAll();
+        }
+
+        function updatePriceSupport() {
+            const cat = document.getElementById('pCategory').value;
+            const box = document.getElementById('price-recommendation-text');
+            if (cat === "Pottery") {
+                box.innerText = "Smart Price Support: Average market price for handmade Pottery is $20.00 - $35.00 based on historical regional sales.";
+            } else if (cat === "Textiles") {
+                box.innerText = "Smart Price Support: Average market price for Handloom Textiles is $35.00 - $60.00 based on active customer interest.";
+            } else if (cat === "Jewelry") {
+                box.innerText = "Smart Price Support: Average market price for Artisan Jewelry is $15.00 - $30.00 based on high demand analysis.";
+            } else {
+                box.innerText = "Select product category below to trigger market price guidance.";
+            }
+        }
+
+        function renderSellerTable() {
+            const tbody = document.getElementById('seller-product-list');
+            tbody.innerHTML = '';
+            products.filter(p => p.seller === "My Self-Help Group" || p.seller === "ClayCraft SHG").forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>$${p.price.toFixed(2)}</td>
+                        <td>${p.stock}</td>
+                        <td><span class="badge ${p.approved ? 'badge-verified' : ''}">${p.approved ? 'Live' : 'Pending Approval'}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Admin Functions
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-moderation-list');
+            tbody.innerHTML = '';
+            let pendingCount = 0;
+
+            products.forEach(p => {
+                if (!p.approved) pendingCount++;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${p.seller}</td>
+                        <td>${p.name}</td>
+                        <td>$${p.price.toFixed(2)}</td>
+                        <td><span class="badge ${p.approved ? 'badge-verified' : ''}">${p.approved ? 'Approved' : 'Pending'}</span></td>
+                        <td>
+                            ${!p.approved ? `<button class="btn btn-sm" onclick="approveProduct(${p.id})">Approve Listing</button>` : '<span>No Action Needed</span>'}
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('admin-pending-count').innerText = pendingCount;
+        }
+
+        function approveProduct(id) {
+            const p = products.find(prod => prod.id === id);
+            if (p) {
+                p.approved = true;
+                renderAll();
+            }
+        }
+
+        // Initialize execution
+        renderAll();
+    </script>
+</body>
+</html>
