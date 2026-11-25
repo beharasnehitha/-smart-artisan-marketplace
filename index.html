@@ -1,310 +1,315 @@
+```html
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Artisan Marketplace</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
+<title>Smart Artisan Marketplace</title>
+
 <style>
-    :root {
-        --primary: #8b4513;
-        --accent: #d2691e;
-        --bg: #fdfaf6;
-        --card-bg: #ffffff;
-        --text: #333333;
-        --success: #2e7d32;
-    }
 
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+:root {
+    --primary: #8b4513;
+    --accent: #d2691e;
+    --bg: #fdfaf6;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --success: #2e7d32;
+}
 
-    body {
-        background-color: var(--bg);
-        color: var(--text);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
+
+.role-selector {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.role-selector option {
+    background: white;
+    color: black;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    padding: 1.5rem;
+    gap: 1.5rem;
+}
+
+.main-content {
+    flex: 1;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+.btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 310px;
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.badge {
+    background: #e0e0e0;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.badge-verified {
+    background: #e8f5e9;
+    color: var(--success);
+}
+
+.metric-box {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-card {
+    flex: 1;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.metric-card h3 {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.metric-card p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    min-width: 550px;
+}
+
+th, td {
+    border: 1px solid #eee;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+th {
+    background: #f8f9fa;
+}
+
+.smart-panel {
+    background: #fff8e1;
+    border-left: 4px solid #ffb300;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.smart-panel h4 {
+    color: #8c6d00;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
 
     header {
-        background: var(--primary);
-        color: white;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    header h1 {
-        font-size: 1.5rem;
-    }
-
-    .role-selector {
-        background: rgba(255,255,255,0.2);
-        border: 1px solid white;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .role-selector option {
-        background: white;
-        color: black;
+        flex-direction: column;
+        gap: 1rem;
     }
 
     .container {
-        display: flex;
-        flex: 1;
-        padding: 1.5rem;
-        gap: 1.5rem;
-    }
-
-    .main-content {
-        flex: 1;
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .btn {
-        background: var(--accent);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .btn:hover {
-        opacity: 0.9;
-    }
-
-    .btn-outline {
-        background: transparent;
-        border: 1px solid var(--accent);
-        color: var(--accent);
-    }
-
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.85rem;
-    }
-
-    input, select, textarea {
-        width: 100%;
-        padding: 0.5rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.75rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .card {
-        border: 1px solid #eee;
-        border-radius: 6px;
         padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .card img {
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-bottom: 0.5rem;
-    }
-
-    .badge {
-        background: #e0e0e0;
-        padding: 0.2rem 0.5rem;
-        border-radius: 3px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        display: inline-block;
-        margin-bottom: 0.5rem;
-    }
-
-    .badge-verified {
-        background: #e8f5e9;
-        color: var(--success);
     }
 
     .metric-box {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        flex-direction: column;
     }
 
-    .metric-card {
-        flex: 1;
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        padding: 1rem;
-        text-align: center;
+    .grid {
+        grid-template-columns: 1fr;
     }
 
-    .metric-card h3 {
-        font-size: 1.5rem;
-        color: var(--primary);
-    }
+}
 
-    .metric-card p {
-        font-size: 0.85rem;
-        color: #666;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-    }
-
-    th, td {
-        border: 1px solid #eee;
-        padding: 0.75rem;
-        text-align: left;
-    }
-
-    th {
-        background: #f8f9fa;
-    }
-
-    .smart-panel {
-        background: #fff8e1;
-        border-left: 4px solid #ffb300;
-        padding: 0.75rem 1rem;
-        margin-bottom: 1rem;
-        border-radius: 0 4px 4px 0;
-    }
-
-    .smart-panel h4 {
-        color: #8c6d00;
-        font-size: 0.95rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .view {
-        display: none;
-    }
-
-    .view.active {
-        display: block;
-    }
-
-    @media (max-width: 768px) {
-        header {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .container {
-            padding: 1rem;
-        }
-
-        .metric-box {
-            flex-direction: column;
-        }
-
-        .grid {
-            grid-template-columns: 1fr;
-        }
-    }
 </style>
-```
-
 </head>
 
 <body>
 
 <header>
+
     <h1>Smart Artisan Marketplace</h1>
 
-```
-<div>
-    <label style="margin-right: 0.5rem;">
-        Switch Platform Perspective:
-    </label>
+    <div>
+        <label style="margin-right: 0.5rem;">
+            Switch Platform Perspective:
+        </label>
 
-    <select id="roleSelect"
-            class="role-selector"
-            onchange="switchRole(this.value)">
+        <select id="roleSelect"
+                class="role-selector"
+                onchange="switchRole(this.value)">
 
-        <option value="customer">
-            Customer Experience (Web/App)
-        </option>
+            <option value="customer">Customer Experience (Web/App)</option>
+            <option value="seller">Artisan / SHG Seller Dashboard</option>
+            <option value="admin">Platform Administrator Portal</option>
 
-        <option value="seller">
-            Artisan / SHG Seller Dashboard
-        </option>
-
-        <option value="admin">
-            Platform Administrator Portal
-        </option>
-    </select>
-</div>
-```
+        </select>
+    </div>
 
 </header>
 
 <div class="container">
 
-```
 <!-- CUSTOMER VIEW -->
+
 <div id="customer-view" class="main-content view active">
 
     <h2>Handmade & Local Discoveries</h2>
 
-    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+    <div style="display:flex; gap:1rem; margin-top:1rem;">
 
         <input type="text"
                id="searchInput"
-               placeholder="Smart Search: Type products, materials, artisans..."
+               placeholder="Search products, materials, artisans..."
                onkeyup="filterProducts()">
 
         <select id="categoryFilter"
-                style="width: 200px;"
+                style="width:200px;"
                 onchange="filterProducts()">
 
             <option value="All">All Categories</option>
             <option value="Pottery">Pottery</option>
             <option value="Textiles">Textiles</option>
             <option value="Jewelry">Jewelry</option>
+            <option value="Wooden Crafts">Wooden Crafts</option>
+            <option value="Home Decor">Home Decor</option>
+            <option value="Bags">Bags</option>
 
         </select>
+
     </div>
 
     <div class="smart-panel" id="recommendation-panel">
+
         <h4>Smart Recommendation Engine</h4>
+
         <p id="recommendation-text">
-            Based on local demand: Artisanal Pottery & Handloom Sarees are trending!
+            Based on local demand: Artisanal Pottery and Handloom Sarees are trending!
         </p>
+
     </div>
 
     <div class="grid" id="customer-product-grid"></div>
 
-    <h3 style="margin-top: 2rem;">Shopping Cart</h3>
+    <h3 style="margin-top:2rem;">Shopping Cart</h3>
 
-    <table id="cart-table">
+    <table>
 
         <thead>
             <tr>
@@ -320,16 +325,18 @@
 
     </table>
 
-    <div style="margin-top: 1rem; text-align: right;">
+    <div style="margin-top:1rem; text-align:right;">
 
         <strong>
             Total: $<span id="cart-total">0.00</span>
         </strong>
 
         <button class="btn"
-                style="margin-left: 1rem;"
+                style="margin-left:1rem;"
                 onclick="checkout()">
+
             Checkout & Pay
+
         </button>
 
     </div>
@@ -338,6 +345,7 @@
 
 
 <!-- SELLER VIEW -->
+
 <div id="seller-view" class="main-content view">
 
     <h2>Artisan & SHG Seller Dashboard</h2>
@@ -356,7 +364,7 @@
 
         <div class="metric-card">
             <h3 id="seller-views">142</h3>
-            <p>Store Views (Demand High)</p>
+            <p>Store Views</p>
         </div>
 
     </div>
@@ -371,20 +379,16 @@
 
     </div>
 
-    <div style="display: flex; gap: 2rem;">
+    <div style="display:flex; gap:2rem; flex-wrap:wrap;">
 
-        <div style="flex: 1;">
+        <div style="flex:1; min-width:250px;">
 
             <h3>Add New Handmade Product</h3>
 
-            <form id="productForm"
-                  onsubmit="addProduct(event)">
+            <form id="productForm" onsubmit="addProduct(event)">
 
                 <label>Product Name</label>
-
-                <input type="text"
-                       id="pName"
-                       required>
+                <input type="text" id="pName" required>
 
                 <label>Category</label>
 
@@ -392,47 +396,30 @@
                         onchange="updatePriceSupport()"
                         required>
 
-                    <option value="">
-                        Select Category
-                    </option>
-
-                    <option value="Pottery">
-                        Pottery
-                    </option>
-
-                    <option value="Textiles">
-                        Textiles
-                    </option>
-
-                    <option value="Jewelry">
-                        Jewelry
-                    </option>
+                    <option value="">Select Category</option>
+                    <option value="Pottery">Pottery</option>
+                    <option value="Textiles">Textiles</option>
+                    <option value="Jewelry">Jewelry</option>
+                    <option value="Wooden Crafts">Wooden Crafts</option>
+                    <option value="Home Decor">Home Decor</option>
+                    <option value="Bags">Bags</option>
 
                 </select>
 
                 <label>Target Price ($)</label>
-
-                <input type="number"
-                       id="pPrice"
-                       step="0.01"
-                       required>
+                <input type="number" id="pPrice" min="0.01" step="0.01" required>
 
                 <label>Initial Stock</label>
-
-                <input type="number"
-                       id="pStock"
-                       required>
+                <input type="number" id="pStock" min="1" step="1" required>
 
                 <label>Product Image URL</label>
 
-                <input type="text"
+                <input type="url"
                        id="pImg"
                        value="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=300"
                        required>
 
-                <button type="submit"
-                        class="btn"
-                        style="width: 100%;">
+                <button type="submit" class="btn" style="width:100%;">
                     List Product for Approval
                 </button>
 
@@ -440,8 +427,7 @@
 
         </div>
 
-
-        <div style="flex: 1.5;">
+        <div style="flex:1.5; min-width:300px;">
 
             <h3>Inventory Management</h3>
 
@@ -469,6 +455,7 @@
 
 
 <!-- ADMIN VIEW -->
+
 <div id="admin-view" class="main-content view">
 
     <h2>Administrator & Moderation Control Center</h2>
@@ -511,560 +498,763 @@
     </table>
 
 </div>
-```
 
 </div>
 
+
 <script>
 
-    // Initial Product Dataset
+// INITIAL PRODUCT DATASET - 20 PRODUCTS
 
-    let products = [
+let products = [
 
-        {
-            id: 1,
-            name: "Terracotta Clay Pot",
-            seller: "ClayCraft SHG",
-            category: "Pottery",
-            price: 25.00,
-            stock: 15,
-            approved: true,
-            img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=300"
-        },
+{
+id:1,
+name:"Terracotta Clay Pot",
+seller:"ClayCraft SHG",
+category:"Pottery",
+price:25,
+stock:15,
+approved:true,
+img:"https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400"
+},
 
-        {
-            id: 2,
-            name: "Handloom Cotton Dupatta",
-            seller: "Weavers Guild",
-            category: "Textiles",
-            price: 40.00,
-            stock: 8,
-            approved: true,
-            img: "https://images.unsplash.com/photo-1606760227091-3dd850d978cd?w=300"
-        },
+{
+id:2,
+name:"Handloom Cotton Dupatta",
+seller:"Weavers Guild",
+category:"Textiles",
+price:40,
+stock:8,
+approved:true,
+img:"https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400"
+},
 
-        {
-            id: 3,
-            name: "Tribal Brass Earrings",
-            seller: "Artisan Collective",
-            category: "Jewelry",
-            price: 18.50,
-            stock: 20,
-            approved: false,
-            img: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300"
+{
+id:3,
+name:"Tribal Brass Earrings",
+seller:"Artisan Collective",
+category:"Jewelry",
+price:18.50,
+stock:20,
+approved:true,
+img:"https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400"
+},
+
+{
+id:4,
+name:"Handmade Ceramic Vase",
+seller:"Creative Potters SHG",
+category:"Pottery",
+price:32,
+stock:12,
+approved:true,
+img:"https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=400"
+},
+
+{
+id:5,
+name:"Traditional Handloom Saree",
+seller:"Indian Weavers SHG",
+category:"Textiles",
+price:85,
+stock:10,
+approved:true,
+img:"https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400"
+},
+
+{
+id:6,
+name:"Wooden Decorative Elephant",
+seller:"WoodArt Crafts",
+category:"Wooden Crafts",
+price:28,
+stock:14,
+approved:true,
+img:"https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400"
+},
+
+{
+id:7,
+name:"Handmade Pearl Necklace",
+seller:"Jewels of India",
+category:"Jewelry",
+price:35,
+stock:18,
+approved:true,
+img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"
+},
+
+{
+id:8,
+name:"Jute Shopping Bag",
+seller:"Eco Bags SHG",
+category:"Bags",
+price:15,
+stock:30,
+approved:true,
+img:"https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400"
+},
+
+{
+id:9,
+name:"Bamboo Storage Basket",
+seller:"Village Handicrafts",
+category:"Home Decor",
+price:22,
+stock:16,
+approved:true,
+img:"https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400"
+},
+
+{
+id:10,
+name:"Hand Painted Wall Art",
+seller:"Colorful Hands SHG",
+category:"Home Decor",
+price:45,
+stock:7,
+approved:true,
+img:"https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400"
+},
+
+{
+id:11,
+name:"Blue Pottery Bowl",
+seller:"Jaipur Pottery SHG",
+category:"Pottery",
+price:20,
+stock:22,
+approved:true,
+img:"https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=400"
+},
+
+{
+id:12,
+name:"Cotton Handwoven Scarf",
+seller:"Village Weavers",
+category:"Textiles",
+price:27,
+stock:19,
+approved:true,
+img:"https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400"
+},
+
+{
+id:13,
+name:"Traditional Silver Bracelet",
+seller:"Tribal Jewelry SHG",
+category:"Jewelry",
+price:42,
+stock:11,
+approved:true,
+img:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400"
+},
+
+{
+id:14,
+name:"Handmade Wooden Tray",
+seller:"Nature Wood Crafts",
+category:"Wooden Crafts",
+price:30,
+stock:13,
+approved:true,
+img:"https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400"
+},
+
+{
+id:15,
+name:"Macrame Wall Hanging",
+seller:"Creative Women SHG",
+category:"Home Decor",
+price:38,
+stock:9,
+approved:true,
+img:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400"
+},
+
+{
+id:16,
+name:"Embroidered Sling Bag",
+seller:"Traditional Stitchers",
+category:"Bags",
+price:29,
+stock:17,
+approved:true,
+img:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400"
+},
+
+{
+id:17,
+name:"Handmade Clay Flower Pot",
+seller:"Earthy Creations",
+category:"Pottery",
+price:19,
+stock:25,
+approved:true,
+img:"https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400"
+},
+
+{
+id:18,
+name:"Traditional Cotton Kurti",
+seller:"Ethnic Fashion SHG",
+category:"Textiles",
+price:48,
+stock:12,
+approved:true,
+img:"https://images.unsplash.com/photo-1583391733956-6c78276477e8?w=400"
+},
+
+{
+id:19,
+name:"Handcrafted Wooden Jewelry Box",
+seller:"Wooden Wonders",
+category:"Wooden Crafts",
+price:33,
+stock:10,
+approved:true,
+img:"https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400"
+},
+
+{
+id:20,
+name:"Handmade Beaded Earrings",
+seller:"Artisan Jewelry Group",
+category:"Jewelry",
+price:16,
+stock:24,
+approved:false,
+img:"https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=400"
+}
+
+];
+
+
+let cart = [];
+let totalSales = 0;
+let totalOrders = 0;
+
+
+// SWITCH BETWEEN CUSTOMER, SELLER AND ADMIN
+
+function switchRole(role) {
+
+    document.querySelectorAll('.view').forEach(v => {
+        v.classList.remove('active');
+    });
+
+    document.getElementById(role + '-view').classList.add('active');
+
+    renderAll();
+
+}
+
+
+// RENDER ALL SECTIONS
+
+function renderAll() {
+
+    renderCustomerGrid();
+    renderSellerTable();
+    renderAdminTable();
+    renderCart();
+
+}
+
+
+// CUSTOMER PRODUCT DISPLAY
+
+function renderCustomerGrid() {
+
+    const grid = document.getElementById('customer-product-grid');
+
+    grid.innerHTML = '';
+
+    const searchStr = document.getElementById('searchInput').value.toLowerCase();
+
+    const categoryStr = document.getElementById('categoryFilter').value;
+
+    products
+    .filter(p => p.approved)
+    .forEach(p => {
+
+        const matchesSearch =
+            p.name.toLowerCase().includes(searchStr) ||
+            p.seller.toLowerCase().includes(searchStr) ||
+            p.category.toLowerCase().includes(searchStr);
+
+        const matchesCategory =
+            categoryStr === 'All' || p.category === categoryStr;
+
+        if (matchesSearch && matchesCategory) {
+
+            grid.innerHTML += `
+
+                <div class="card">
+
+                    <div>
+
+                        <img src="${p.img}"
+                             alt="${p.name}"
+                             onerror="this.src='https://placehold.co/400x250?text=Handmade+Product'">
+
+                        <span class="badge badge-verified">
+                            Verified Artisan
+                        </span>
+
+                        <h4>${p.name}</h4>
+
+                        <p style="font-size:0.85rem;color:#666;">
+                            by ${p.seller}
+                        </p>
+
+                        <p style="font-weight:bold;margin:0.5rem 0;color:var(--primary);">
+                            $${p.price.toFixed(2)}
+                        </p>
+
+                        <p style="font-size:0.8rem;color:#666;">
+                            Available Stock: ${p.stock}
+                        </p>
+
+                    </div>
+
+                    <button class="btn btn-sm"
+                            onclick="addToCart(${p.id})"
+                            ${p.stock <= 0 ? 'disabled' : ''}>
+
+                        ${p.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+
+                    </button>
+
+                </div>
+
+            `;
+
         }
 
-    ];
+    });
 
-    let cart = [];
-    let totalSales = 0.00;
-    let totalOrders = 0;
+    if (grid.innerHTML === '') {
 
-
-    // Switch between Customer, Seller and Admin
-
-    function switchRole(role) {
-
-        document.querySelectorAll('.view')
-            .forEach(v => v.classList.remove('active'));
-
-        document.getElementById(`${role}-view`)
-            .classList.add('active');
-
-        renderAll();
-    }
-
-
-    // Render all sections
-
-    function renderAll() {
-
-        renderCustomerGrid();
-        renderSellerTable();
-        renderAdminTable();
-        renderCart();
+        grid.innerHTML = "<p>No products found. Try another search.</p>";
 
     }
 
-
-    // Customer Product Display
-
-    function renderCustomerGrid() {
-
-        const grid =
-            document.getElementById('customer-product-grid');
-
-        grid.innerHTML = '';
-
-        const searchStr =
-            document.getElementById('searchInput')
-                .value.toLowerCase();
-
-        const categoryStr =
-            document.getElementById('categoryFilter').value;
-
-        products
-            .filter(p => p.approved)
-            .forEach(p => {
-
-                const matchesSearch =
-                    p.name.toLowerCase().includes(searchStr) ||
-                    p.seller.toLowerCase().includes(searchStr);
-
-                const matchesCategory =
-                    categoryStr === 'All' ||
-                    p.category === categoryStr;
-
-                if (matchesSearch && matchesCategory) {
-
-                    grid.innerHTML += `
-
-                        <div class="card">
-
-                            <div>
-
-                                <img src="${p.img}"
-                                     alt="${p.name}">
-
-                                <span class="badge badge-verified">
-                                    Verified Artisan
-                                </span>
-
-                                <h4>${p.name}</h4>
-
-                                <p style="font-size: 0.85rem; color: #666;">
-                                    by ${p.seller}
-                                </p>
-
-                                <p style="font-weight: bold;
-                                          margin: 0.5rem 0;
-                                          color: var(--primary);">
-                                    $${p.price.toFixed(2)}
-                                </p>
-
-                            </div>
-
-                            <button class="btn btn-sm"
-                                    onclick="addToCart(${p.id})">
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    `;
-                }
-
-            });
-    }
+}
 
 
-    function filterProducts() {
+function filterProducts() {
 
-        renderCustomerGrid();
+    renderCustomerGrid();
 
-    }
+}
 
 
-    // Add product to cart
+// ADD PRODUCT TO CART
 
-    function addToCart(productId) {
+function addToCart(productId) {
 
-        const product =
-            products.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId);
 
-        if (product && product.stock > 0) {
+    if (product && product.stock > 0) {
 
-            const existing =
-                cart.find(c => c.id === productId);
+        const existing = cart.find(c => c.id === productId);
 
-            if (existing) {
+        if (existing) {
 
-                if (existing.qty < product.stock) {
-                    existing.qty++;
-                } else {
-                    alert("Maximum available stock reached!");
-                }
+            if (existing.qty < product.stock) {
+
+                existing.qty++;
 
             } else {
 
-                cart.push({
-                    ...product,
-                    qty: 1
-                });
+                alert("Maximum available stock reached!");
 
             }
 
-            renderCart();
-
         } else {
 
-            alert("Product is out of stock!");
+            cart.push({
+                ...product,
+                qty:1
+            });
 
         }
-    }
-
-
-    // Display cart
-
-    function renderCart() {
-
-        const body =
-            document.getElementById('cart-body');
-
-        body.innerHTML = '';
-
-        let sum = 0;
-
-        cart.forEach((item, index) => {
-
-            const itemTotal =
-                item.price * item.qty;
-
-            sum += itemTotal;
-
-            body.innerHTML += `
-
-                <tr>
-
-                    <td>${item.name}</td>
-
-                    <td>${item.seller}</td>
-
-                    <td>$${item.price.toFixed(2)}</td>
-
-                    <td>${item.qty}</td>
-
-                    <td>
-                        <button class="btn btn-sm btn-outline"
-                                onclick="removeFromCart(${index})">
-                            Remove
-                        </button>
-                    </td>
-
-                </tr>
-
-            `;
-
-        });
-
-        document.getElementById('cart-total')
-            .innerText = sum.toFixed(2);
-
-    }
-
-
-    // Remove item from cart
-
-    function removeFromCart(index) {
-
-        cart.splice(index, 1);
 
         renderCart();
 
+    } else {
+
+        alert("Product is out of stock!");
+
     }
 
+}
 
-    // Checkout
 
-    function checkout() {
+// DISPLAY CART
 
-        if (cart.length === 0) {
+function renderCart() {
 
-            alert("Your cart is empty!");
+    const body = document.getElementById('cart-body');
+
+    body.innerHTML = '';
+
+    let sum = 0;
+
+    cart.forEach((item,index) => {
+
+        const itemTotal = item.price * item.qty;
+
+        sum += itemTotal;
+
+        body.innerHTML += `
+
+            <tr>
+
+                <td>${item.name}</td>
+
+                <td>${item.seller}</td>
+
+                <td>$${item.price.toFixed(2)}</td>
+
+                <td>${item.qty}</td>
+
+                <td>
+                    <button class="btn btn-sm btn-outline"
+                            onclick="removeFromCart(${index})">
+
+                        Remove
+
+                    </button>
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+    document.getElementById('cart-total').innerText = sum.toFixed(2);
+
+}
+
+
+// REMOVE ITEM FROM CART
+
+function removeFromCart(index) {
+
+    cart.splice(index,1);
+
+    renderCart();
+
+}
+
+
+// CHECKOUT
+
+function checkout() {
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty!");
+
+        return;
+
+    }
+
+    // Check stock before completing the order
+
+    for (const item of cart) {
+
+        const original = products.find(p => p.id === item.id);
+
+        if (!original || original.stock < item.qty) {
+
+            alert("Insufficient stock for " + item.name);
 
             return;
-        }
-
-        cart.forEach(item => {
-
-            const orig =
-                products.find(p => p.id === item.id);
-
-            if (orig) {
-
-                orig.stock -= item.qty;
-
-            }
-
-            totalSales += item.price * item.qty;
-
-            totalOrders++;
-
-        });
-
-        cart = [];
-
-        alert(
-            "Order placed successfully! Notifications sent to respective artisans."
-        );
-
-        document.getElementById('seller-sales')
-            .innerText = `$${totalSales.toFixed(2)}`;
-
-        document.getElementById('seller-orders')
-            .innerText = totalOrders;
-
-        renderAll();
-
-    }
-
-
-    // Add seller product
-
-    function addProduct(e) {
-
-        e.preventDefault();
-
-        const name =
-            document.getElementById('pName').value;
-
-        const category =
-            document.getElementById('pCategory').value;
-
-        const price =
-            parseFloat(
-                document.getElementById('pPrice').value
-            );
-
-        const stock =
-            parseInt(
-                document.getElementById('pStock').value
-            );
-
-        const img =
-            document.getElementById('pImg').value;
-
-        const newProduct = {
-
-            id: products.length + 1,
-
-            name: name,
-
-            seller: "My Self-Help Group",
-
-            category: category,
-
-            price: price,
-
-            stock: stock,
-
-            approved: false,
-
-            img: img
-
-        };
-
-        products.push(newProduct);
-
-        document.getElementById('productForm')
-            .reset();
-
-        alert(
-            "Product submitted for platform moderation!"
-        );
-
-        renderAll();
-
-    }
-
-
-    // Smart price guidance
-
-    function updatePriceSupport() {
-
-        const cat =
-            document.getElementById('pCategory').value;
-
-        const box =
-            document.getElementById(
-                'price-recommendation-text'
-            );
-
-        if (cat === "Pottery") {
-
-            box.innerText =
-                "Smart Price Support: Average market price for handmade Pottery is $20.00 - $35.00 based on historical regional sales.";
-
-        } else if (cat === "Textiles") {
-
-            box.innerText =
-                "Smart Price Support: Average market price for Handloom Textiles is $35.00 - $60.00 based on active customer interest.";
-
-        } else if (cat === "Jewelry") {
-
-            box.innerText =
-                "Smart Price Support: Average market price for Artisan Jewelry is $15.00 - $30.00 based on high demand analysis.";
-
-        } else {
-
-            box.innerText =
-                "Select product category below to trigger market price guidance.";
 
         }
 
     }
 
+    cart.forEach(item => {
 
-    // Seller inventory table
+        const original = products.find(p => p.id === item.id);
 
-    function renderSellerTable() {
+        if (original) {
 
-        const tbody =
-            document.getElementById(
-                'seller-product-list'
-            );
-
-        tbody.innerHTML = '';
-
-        products
-            .filter(
-                p =>
-                    p.seller === "My Self-Help Group" ||
-                    p.seller === "ClayCraft SHG"
-            )
-            .forEach(p => {
-
-                tbody.innerHTML += `
-
-                    <tr>
-
-                        <td>${p.name}</td>
-
-                        <td>${p.category}</td>
-
-                        <td>$${p.price.toFixed(2)}</td>
-
-                        <td>${p.stock}</td>
-
-                        <td>
-
-                            <span class="badge ${
-                                p.approved
-                                ? 'badge-verified'
-                                : ''
-                            }">
-
-                                ${
-                                    p.approved
-                                    ? 'Live'
-                                    : 'Pending Approval'
-                                }
-
-                            </span>
-
-                        </td>
-
-                    </tr>
-
-                `;
-
-            });
-
-    }
-
-
-    // Admin moderation table
-
-    function renderAdminTable() {
-
-        const tbody =
-            document.getElementById(
-                'admin-moderation-list'
-            );
-
-        tbody.innerHTML = '';
-
-        let pendingCount = 0;
-
-        products.forEach(p => {
-
-            if (!p.approved) {
-
-                pendingCount++;
-
-            }
-
-            tbody.innerHTML += `
-
-                <tr>
-
-                    <td>${p.seller}</td>
-
-                    <td>${p.name}</td>
-
-                    <td>$${p.price.toFixed(2)}</td>
-
-                    <td>
-
-                        <span class="badge ${
-                            p.approved
-                            ? 'badge-verified'
-                            : ''
-                        }">
-
-                            ${
-                                p.approved
-                                ? 'Approved'
-                                : 'Pending'
-                            }
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        ${
-                            !p.approved
-
-                            ? `
-                                <button class="btn btn-sm"
-                                        onclick="approveProduct(${p.id})">
-                                    Approve Listing
-                                </button>
-                              `
-
-                            : '<span>No Action Needed</span>'
-                        }
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        });
-
-        document.getElementById(
-            'admin-pending-count'
-        ).innerText = pendingCount;
-
-    }
-
-
-    // Approve product
-
-    function approveProduct(id) {
-
-        const product =
-            products.find(p => p.id === id);
-
-        if (product) {
-
-            product.approved = true;
-
-            renderAll();
+            original.stock -= item.qty;
 
         }
 
-    }
+        totalSales += item.price * item.qty;
 
+        totalOrders++;
 
-    // Initialize application
+    });
+
+    cart = [];
+
+    alert(
+        "Order placed successfully! Notifications sent to respective artisans."
+    );
+
+    document.getElementById('seller-sales').innerText =
+        "$" + totalSales.toFixed(2);
+
+    document.getElementById('seller-orders').innerText =
+        totalOrders;
 
     renderAll();
+
+}
+
+
+// ADD SELLER PRODUCT
+
+function addProduct(e) {
+
+    e.preventDefault();
+
+    const name = document.getElementById('pName').value;
+
+    const category = document.getElementById('pCategory').value;
+
+    const price = parseFloat(document.getElementById('pPrice').value);
+
+    const stock = parseInt(document.getElementById('pStock').value);
+
+    const img = document.getElementById('pImg').value;
+
+    const newProduct = {
+
+        id: Math.max(...products.map(p => p.id),0) + 1,
+
+        name:name,
+
+        seller:"My Self-Help Group",
+
+        category:category,
+
+        price:price,
+
+        stock:stock,
+
+        approved:false,
+
+        img:img
+
+    };
+
+    products.push(newProduct);
+
+    document.getElementById('productForm').reset();
+
+    alert("Product submitted for platform moderation!");
+
+    renderAll();
+
+}
+
+
+// SMART PRICE GUIDANCE
+
+function updatePriceSupport() {
+
+    const cat = document.getElementById('pCategory').value;
+
+    const box = document.getElementById('price-recommendation-text');
+
+    if (cat === "Pottery") {
+
+        box.innerText =
+        "Smart Price Support: Average handmade Pottery price is $20 - $35.";
+
+    }
+
+    else if (cat === "Textiles") {
+
+        box.innerText =
+        "Smart Price Support: Average Handloom Textiles price is $35 - $60.";
+
+    }
+
+    else if (cat === "Jewelry") {
+
+        box.innerText =
+        "Smart Price Support: Average Artisan Jewelry price is $15 - $45.";
+
+    }
+
+    else if (cat === "Wooden Crafts") {
+
+        box.innerText =
+        "Smart Price Support: Average Wooden Crafts price is $25 - $50.";
+
+    }
+
+    else if (cat === "Home Decor") {
+
+        box.innerText =
+        "Smart Price Support: Average Home Decor price is $20 - $50.";
+
+    }
+
+    else if (cat === "Bags") {
+
+        box.innerText =
+        "Smart Price Support: Average Handmade Bags price is $15 - $40.";
+
+    }
+
+    else {
+
+        box.innerText =
+        "Select product category below to trigger market price guidance.";
+
+    }
+
+}
+
+
+// SELLER INVENTORY TABLE
+
+function renderSellerTable() {
+
+    const tbody = document.getElementById('seller-product-list');
+
+    tbody.innerHTML = '';
+
+    products
+    .filter(p =>
+        p.seller === "My Self-Help Group" ||
+        p.seller === "ClayCraft SHG"
+    )
+    .forEach(p => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>${p.name}</td>
+
+                <td>${p.category}</td>
+
+                <td>$${p.price.toFixed(2)}</td>
+
+                <td>${p.stock}</td>
+
+                <td>
+
+                    <span class="badge ${p.approved ? 'badge-verified' : ''}">
+
+                        ${p.approved ? 'Live' : 'Pending Approval'}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+// ADMIN MODERATION TABLE
+
+function renderAdminTable() {
+
+    const tbody = document.getElementById('admin-moderation-list');
+
+    tbody.innerHTML = '';
+
+    let pendingCount = 0;
+
+    products.forEach(p => {
+
+        if (!p.approved) {
+
+            pendingCount++;
+
+        }
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>${p.seller}</td>
+
+                <td>${p.name}</td>
+
+                <td>$${p.price.toFixed(2)}</td>
+
+                <td>
+
+                    <span class="badge ${p.approved ? 'badge-verified' : ''}">
+
+                        ${p.approved ? 'Approved' : 'Pending'}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    ${
+                        !p.approved
+
+                        ? `<button class="btn btn-sm"
+                                   onclick="approveProduct(${p.id})">
+                                Approve Listing
+                           </button>`
+
+                        : '<span>No Action Needed</span>'
+                    }
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+    document.getElementById('admin-pending-count').innerText = pendingCount;
+
+}
+
+
+// APPROVE PRODUCT
+
+function approveProduct(id) {
+
+    const product = products.find(p => p.id === id);
+
+    if (product) {
+
+        product.approved = true;
+
+        alert(product.name + " has been approved successfully!");
+
+        renderAll();
+
+    }
+
+}
+
+
+// INITIALIZE APPLICATION
+
+renderAll();
 
 </script>
 
 </body>
 </html>
+```
